@@ -151,6 +151,18 @@ h1, h2, h3 { font-family: var(--mincho); font-weight: 600; text-wrap: balance; l
 .art em { color: var(--muted); font-style: normal; font-size: 13px; }
 a.lp-logo { text-decoration: none; color: inherit; }
 
+.guide-list { list-style: none; padding: 0; margin: 30px 0 0; }
+.guide-item {
+  padding: 20px 0; border-top: 1px solid var(--rule-2);
+}
+.guide-item:first-child { border-top: 1px solid var(--rule); }
+.guide-item a {
+  font-family: var(--mincho); font-size: 18px; font-weight: 600;
+  text-decoration: none; line-height: 1.5;
+}
+.guide-item a:hover { text-decoration: underline; }
+.guide-item p { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
+
 /* ---------- 製品画面 ---------- */
 .lp-shot { margin: 26px 0 0; }
 .lp-shot img {
@@ -321,6 +333,8 @@ a { color: var(--ai); }
 <header class="lp-wrap lp-head">
   <span class="lp-logo">電帳ファイラー</span>
   <span class="lp-sub">電子帳簿保存法「検索要件」対応ツール</span>
+  <span style="flex:1"></span>
+  <a href="guide/" style="font-size:13px">実務ガイド</a>
 </header>
 
 <section class="lp-hero lp-band">

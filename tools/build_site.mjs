@@ -162,6 +162,8 @@ if (existsSync('articles')) {
   <div class="lp-wrap art">
     <h1 class="art-title">${title}</h1>
     ${bodyHtml}
+    <hr>
+    <p><a href="${SITE_URL}/guide/">電子帳簿保存法の実務ガイド 一覧へ</a></p>
   </div>
 </article>
 <footer class="lp-foot">
@@ -187,9 +189,46 @@ if (existsSync('articles')) {
         image: `${SITE_URL}/ogp.jpg`,
       },
     }), 'utf8');
-    guides.push({ slug, title, desc });
+    guides.push({ slug, title, desc, article });
     console.log(`  guide/${slug}/  ${title}`);
   }
+
+  // 記事同士をつなぐ一覧ページ。検索でどの記事に入っても他へ回遊できるようにする。
+  const list = guides.map((g) => `
+      <li class="guide-item">
+        <a href="${SITE_URL}/guide/${g.slug}/">${g.title}</a>
+        <p>${g.desc}</p>
+      </li>`).join('');
+
+  writeFileSync(join(OUT, 'guide', 'index.html'), page({
+    fragment: lpStyle + `
+<header class="lp-wrap lp-head">
+  <a class="lp-logo" href="${SITE_URL}/">電帳ファイラー</a>
+  <span class="lp-sub">電子帳簿保存法「検索要件」対応ツール</span>
+</header>
+<section class="lp-band">
+  <div class="lp-wrap art">
+    <h1 class="art-title">電子帳簿保存法の実務ガイド</h1>
+    <p>電子取引データの保存について、実務で迷いやすいところをまとめています。</p>
+    <ul class="guide-list">${list}</ul>
+  </div>
+</section>
+<footer class="lp-foot">
+  <div class="lp-wrap"><a href="${SITE_URL}/">電帳ファイラー</a> — 電子帳簿保存法「検索要件」対応ツール</div>
+</footer>`,
+    url: `${SITE_URL}/guide/`,
+    title: '電子帳簿保存法の実務ガイド｜電帳ファイラー',
+    description: '電子取引データの保存で実務上迷いやすい点を、具体的な手順とひな形つきで解説しています。',
+    image: 'ogp.jpg',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: '電子帳簿保存法の実務ガイド',
+      inLanguage: 'ja',
+      url: `${SITE_URL}/guide/`,
+    },
+  }), 'utf8');
+  console.log(`  guide/  （記事一覧 ${guides.length}本）`);
 }
 
 /* ---------- クローラ向け ---------- */
@@ -202,6 +241,7 @@ writeFileSync(join(OUT, 'sitemap.xml'),
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE_URL}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>
   <url><loc>${SITE_URL}/tool/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>
+${guides.length ? `  <url><loc>${SITE_URL}/guide/</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>` : ''}
 ${guides.map((g) => `  <url><loc>${SITE_URL}/guide/${g.slug}/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `, 'utf8');
