@@ -8,7 +8,14 @@
 import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
-const SITE_URL = (process.env.SITE_URL || 'https://9q6xtwz22p-cmd.github.io/dencho-filer').replace(/\/$/, '');
+// 設定は site.config.json に持たせる。環境変数があればそちらを優先する。
+// 環境変数だけに頼ると、次に deploy したときSearch Consoleの確認タグが消えて
+// 所有権確認が外れてしまう。
+const cfg = existsSync('site.config.json')
+  ? JSON.parse(readFileSync('site.config.json', 'utf8'))
+  : {};
+
+const SITE_URL = (process.env.SITE_URL || cfg.siteUrl || 'https://9q6xtwz22p-cmd.github.io/dencho-filer').replace(/\/$/, '');
 const OUT = 'site';
 
 const TITLE = '電帳ファイラー — 電子帳簿保存法の検索要件に対応するファイル整理ツール';
@@ -26,7 +33,7 @@ const read = (p) => readFileSync(p, 'utf8');
 // Google Search Console の所有権確認。2方式のどちらでも通せるようにしてある。
 //   HTMLタグ方式 : GSC_TOKEN="xxxx" npm run deploy
 //   HTMLファイル方式: GSC_FILE="google1234abcd.html" npm run deploy
-const GSC = process.env.GSC_TOKEN || '';
+const GSC = process.env.GSC_TOKEN || cfg.googleSiteVerification || '';
 const gscTag = GSC ? `<meta name="google-site-verification" content="${GSC}">` : '';
 const GSC_FILE = (process.env.GSC_FILE || '').trim();
 
