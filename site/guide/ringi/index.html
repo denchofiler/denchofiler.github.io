@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電子帳簿保存法の対応を社内で通す｜稟議書の書き方とそのまま使えるテンプレート｜電帳ファイラー</title>
+<meta name="description" content="対応が必要なことは分かった。方法も調べた。問題は、社内を通せないこと。">
+<link rel="canonical" href="https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/ringi/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="電帳ファイラー">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="電子帳簿保存法の対応を社内で通す｜稟議書の書き方とそのまま使えるテンプレート｜電帳ファイラー">
+<meta property="og:description" content="対応が必要なことは分かった。方法も調べた。問題は、社内を通せないこと。">
+<meta property="og:url" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/ringi/">
+<meta property="og:image" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="電子帳簿保存法の対応を社内で通す｜稟議書の書き方とそのまま使えるテンプレート｜電帳ファイラー">
+<meta name="twitter:description" content="対応が必要なことは分かった。方法も調べた。問題は、社内を通せないこと。">
+<meta name="twitter:image" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/ogp.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🗂️</text></svg>">
+<meta name="google-site-verification" content="RxRX0YFfAy4QXDpHk19DI5Vg9fOKHT2oOqm4MwakFT4">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "電子帳簿保存法の対応を社内で通す｜稟議書の書き方とそのまま使えるテンプレート",
+  "description": "対応が必要なことは分かった。方法も調べた。問題は、社内を通せないこと。",
+  "inLanguage": "ja",
+  "mainEntityOfPage": "https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/ringi/",
+  "image": "https://9q6xtwz22p-cmd.github.io/dencho-filer/ogp.jpg"
+}
+</script>
+<style>
+/* ============================================================
+   台帳（ledger）を骨格にした構成。
+   見出しは明朝＝税務・法務文書の書体。朱は検印にだけ使う。
+   ============================================================ */
+:root {
+  --washi:   #FBFAF7;
+  --panel:   #FFFFFF;
+  --sumi:    #16222E;
+  --ai:      #1F4E79;
+  --ai-soft: #E6EDF4;
+  --shu:     #B03A2E;
+  --rule:    #D9D3C6;
+  --rule-2:  #EDE9E0;
+  --muted:   #65707D;
+
+  --mincho: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "MS PMincho", serif;
+  --gothic: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, "Osaka-Mono", monospace;
+
+  --wrap: 1000px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --washi:   #14181D;
+    --panel:   #1B2027;
+    --sumi:    #E9E6E0;
+    --ai:      #7FB0DC;
+    --ai-soft: #1E2A36;
+    --shu:     #E08476;
+    --rule:    #333B45;
+    --rule-2:  #262D35;
+    --muted:   #98A2AE;
+  }
+}
+:root[data-theme="dark"] {
+  --washi:   #14181D;
+  --panel:   #1B2027;
+  --sumi:    #E9E6E0;
+  --ai:      #7FB0DC;
+  --ai-soft: #1E2A36;
+  --shu:     #E08476;
+  --rule:    #333B45;
+  --rule-2:  #262D35;
+  --muted:   #98A2AE;
+}
+:root[data-theme="light"] {
+  --washi:   #FBFAF7;
+  --panel:   #FFFFFF;
+  --sumi:    #16222E;
+  --ai:      #1F4E79;
+  --ai-soft: #E6EDF4;
+  --shu:     #B03A2E;
+  --rule:    #D9D3C6;
+  --rule-2:  #EDE9E0;
+  --muted:   #65707D;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--washi);
+  color: var(--sumi);
+  font-family: var(--gothic);
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lp-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+h1, h2, h3 { font-family: var(--mincho); font-weight: 600; text-wrap: balance; line-height: 1.4; margin: 0; }
+
+.lp-eyebrow {
+  font-size: 12px; letter-spacing: .18em; color: var(--muted);
+  font-family: var(--gothic); font-weight: 700;
+}
+
+/* ---------- 台帳の帯 ---------- */
+.lp-band { border-top: 1px solid var(--rule); }
+.lp-band > .lp-wrap { padding-top: 64px; padding-bottom: 64px; }
+
+/* ---------- ヘッダ ---------- */
+.lp-head {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  padding: 20px 0 18px;
+}
+.lp-logo { font-family: var(--mincho); font-size: 21px; font-weight: 600; letter-spacing: .04em; }
+.lp-head .lp-sub { font-size: 12px; color: var(--muted); }
+
+/* ---------- ヒーロー ---------- */
+.lp-hero > .lp-wrap { padding-top: 40px; padding-bottom: 56px; }
+.lp-hero h1 { font-size: clamp(27px, 4.4vw, 44px); letter-spacing: .01em; }
+.lp-hero .lp-lede {
+  margin-top: 20px; max-width: 40em; color: var(--muted); font-size: 16px;
+}
+.lp-hero .lp-lede strong { color: var(--sumi); font-weight: 700; }
+
+/* ---------- 図版（全幅の暗色版面） ---------- */
+.lp-plate {
+  margin: 0;
+  background: #111113;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.lp-plate img {
+  display: block; width: 100%; max-width: 1400px; height: auto; margin: 0 auto;
+}
+.lp-plate figcaption {
+  max-width: var(--wrap); margin: 0 auto; padding: 16px 24px 24px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lp-plate-cap { font-size: 15px; color: #E8E4DC; }
+.lp-plate-cap strong { color: #F0A28E; font-weight: 700; }
+.lp-plate-sub { font-size: 12.5px; color: #8C9199; }
+
+/* ---------- 記事ページ ---------- */
+.art { max-width: 46em; }
+.art-title {
+  font-size: clamp(24px, 3.6vw, 34px); margin-bottom: 26px;
+  padding-bottom: 18px; border-bottom: 2px solid var(--shu);
+}
+.art h2 { font-size: clamp(19px, 2.5vw, 24px); margin: 44px 0 12px; }
+.art h3 { font-size: 17px; margin: 30px 0 8px; color: var(--sumi); }
+.art p { margin: 0 0 16px; }
+.art ul, .art ol { margin: 0 0 18px; padding-left: 1.4em; }
+.art li { margin-bottom: 7px; }
+.art hr { border: 0; border-top: 1px solid var(--rule); margin: 38px 0; }
+.art blockquote {
+  margin: 0 0 18px; padding: 12px 18px; border-left: 3px solid var(--shu);
+  background: var(--panel); font-size: 14.5px;
+}
+.art blockquote p:last-child { margin-bottom: 0; }
+.art code {
+  background: var(--rule-2); padding: 1px 6px; border-radius: 3px;
+  font-family: var(--mono); font-size: .9em;
+}
+.art pre {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 2px;
+  padding: 14px 16px; overflow-x: auto; margin: 0 0 18px;
+}
+.art pre code { background: none; padding: 0; font-size: 13px; line-height: 1.75; }
+.art .tbl { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--rule); border-radius: 2px; }
+.art table { border-collapse: collapse; width: 100%; background: var(--panel); min-width: 380px; }
+.art th, .art td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--rule-2); font-size: 14px; }
+.art thead th { background: var(--rule-2); font-size: 12px; color: var(--muted); white-space: nowrap; }
+.art tr:last-child td { border-bottom: 0; }
+.art em { color: var(--muted); font-style: normal; font-size: 13px; }
+a.lp-logo { text-decoration: none; color: inherit; }
+
+.guide-list { list-style: none; padding: 0; margin: 30px 0 0; }
+.guide-item {
+  padding: 20px 0; border-top: 1px solid var(--rule-2);
+}
+.guide-item:first-child { border-top: 1px solid var(--rule); }
+.guide-item a {
+  font-family: var(--mincho); font-size: 18px; font-weight: 600;
+  text-decoration: none; line-height: 1.5;
+}
+.guide-item a:hover { text-decoration: underline; }
+.guide-item p { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
+
+/* ---------- 製品画面 ---------- */
+.lp-shot { margin: 26px 0 0; }
+.lp-shot img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--rule); border-radius: 2px; background: var(--panel);
+}
+.lp-shot figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.lp-shot-inline { margin-top: 16px; max-width: 560px; }
+
+/* ---------- 変換の実演（台帳の行） ---------- */
+.lp-ledger {
+  margin-top: 34px; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 2px;
+  overflow-x: auto;
+}
+.lp-ledger-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 9px 16px; border-bottom: 1px solid var(--rule);
+  background: var(--rule-2); font-size: 11.5px; letter-spacing: .1em; color: var(--muted); font-weight: 700;
+}
+.lp-row {
+  display: grid; grid-template-columns: 1fr 30px 1.25fr; align-items: center;
+  gap: 14px; padding: 11px 16px; border-bottom: 1px solid var(--rule-2);
+  min-width: 620px;
+}
+.lp-row:last-child { border-bottom: 0; }
+.lp-before, .lp-after {
+  font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-before { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.lp-after { color: var(--ai); font-weight: 600; }
+.lp-arrow { color: var(--rule); text-align: center; font-size: 15px; }
+
+/* ---------- 検印 ---------- */
+.lp-seal-area { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 30px; }
+.lp-seal {
+  flex: none;
+  width: 96px; height: 96px; border: 2.5px solid var(--shu); border-radius: 50%;
+  color: var(--shu); display: grid; place-content: center; text-align: center;
+  font-family: var(--mincho); font-size: 15px; line-height: 1.3; letter-spacing: .05em;
+  transform: rotate(-9deg); opacity: .9;
+  animation: lp-stamp .5s cubic-bezier(.2,.9,.3,1.4) .25s both;
+}
+@keyframes lp-stamp {
+  from { transform: rotate(-9deg) scale(1.7); opacity: 0; }
+  to   { transform: rotate(-9deg) scale(1);   opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-seal { animation: none; }
+}
+.lp-seal-note { font-size: 13.5px; color: var(--muted); max-width: 34em; }
+
+/* ---------- CTA ---------- */
+.lp-cta-row { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 32px; align-items: center; }
+.lp-btn {
+  display: inline-block; padding: 13px 27px; border-radius: 2px; text-decoration: none;
+  font-weight: 700; font-size: 15px; border: 1.5px solid var(--ai);
+  background: var(--ai); color: var(--washi); transition: .15s;
+}
+.lp-btn:hover { background: var(--sumi); border-color: var(--sumi); }
+.lp-btn.lp-ghost { background: transparent; color: var(--ai); }
+.lp-btn.lp-ghost:hover { background: var(--ai-soft); color: var(--ai); border-color: var(--ai); }
+.lp-btn:focus-visible, a:focus-visible { outline: 2px solid var(--shu); outline-offset: 3px; }
+.lp-cta-note { font-size: 12.5px; color: var(--muted); }
+
+/* ---------- 見出し ---------- */
+.lp-h2 { font-size: clamp(21px, 2.8vw, 28px); margin-bottom: 8px; }
+.lp-band p { max-width: 40em; }
+
+/* ---------- 数字の強調 ---------- */
+.lp-stat {
+  display: flex; align-items: baseline; gap: 13px; flex-wrap: wrap;
+  margin: 26px 0 6px; padding-left: 17px; border-left: 3px solid var(--shu);
+}
+.lp-stat .lp-num {
+  font-family: var(--mincho); font-size: clamp(34px, 6vw, 52px); color: var(--shu);
+  font-variant-numeric: tabular-nums; line-height: 1;
+}
+.lp-stat .lp-num-label { font-size: 15px; color: var(--sumi); font-weight: 700; }
+.lp-src { font-size: 12px; color: var(--muted); }
+
+/* ---------- 判定（該当するか） ---------- */
+.lp-check {
+  margin-top: 28px; background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 2px; padding: 22px 24px;
+}
+.lp-check h3 { font-size: 17px; margin-bottom: 12px; }
+.lp-check dl { margin: 0; display: grid; gap: 12px; }
+.lp-check dt { font-weight: 700; font-size: 14px; }
+.lp-check dd { margin: 3px 0 0; font-size: 14px; color: var(--muted); }
+.lp-tag {
+  display: inline-block; font-size: 11.5px; font-weight: 700; padding: 1px 9px;
+  border-radius: 2px; margin-right: 8px; vertical-align: 1.5px;
+}
+.lp-tag.lp-must { background: var(--shu); color: #fff; }
+.lp-tag.lp-free { background: var(--ai-soft); color: var(--ai); }
+
+/* ---------- 手順 ---------- */
+.lp-steps { margin-top: 26px; display: grid; gap: 0; }
+.lp-step {
+  display: grid; grid-template-columns: 62px 1fr; gap: 20px;
+  padding: 22px 0; border-top: 1px solid var(--rule-2); align-items: start;
+}
+.lp-step:first-child { border-top: 1px solid var(--rule); }
+.lp-step-n {
+  font-family: var(--mincho); font-size: 15px; color: var(--muted);
+  border: 1px solid var(--rule); border-radius: 50%;
+  width: 38px; height: 38px; display: grid; place-content: center;
+}
+.lp-step h3 { font-size: 17px; margin-bottom: 4px; }
+.lp-step p { font-size: 14.5px; color: var(--muted); margin: 0; }
+
+/* ---------- 表 ---------- */
+.lp-table-scroll { overflow-x: auto; margin-top: 24px; border: 1px solid var(--rule); border-radius: 2px; }
+table.lp-cmp { border-collapse: collapse; width: 100%; min-width: 640px; background: var(--panel); }
+.lp-cmp th, .lp-cmp td {
+  padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--rule-2); font-size: 14px;
+}
+.lp-cmp thead th {
+  background: var(--rule-2); font-size: 12px; letter-spacing: .06em;
+  color: var(--muted); font-weight: 700; white-space: nowrap;
+}
+.lp-cmp tbody th { font-weight: 700; white-space: nowrap; }
+.lp-cmp tr:last-child td, .lp-cmp tr:last-child th { border-bottom: 0; }
+.lp-cmp .lp-ours { background: var(--ai-soft); font-weight: 700; color: var(--ai); }
+
+/* ---------- 価格 ---------- */
+.lp-prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; margin-top: 26px; }
+.lp-price {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 2px; padding: 26px 24px;
+}
+.lp-price.lp-feature { border-color: var(--ai); border-width: 1.5px; }
+.lp-price h3 { font-size: 16px; }
+.lp-price .lp-amount {
+  font-family: var(--mincho); font-size: 40px; font-variant-numeric: tabular-nums;
+  margin: 10px 0 2px; letter-spacing: -.01em;
+}
+.lp-price .lp-amount small { font-size: 14px; font-family: var(--gothic); color: var(--muted); margin-left: 4px; }
+.lp-price .lp-once { font-size: 12.5px; color: var(--shu); font-weight: 700; }
+.lp-price ul { margin: 16px 0 0; padding-left: 1.15em; font-size: 14px; color: var(--muted); }
+.lp-price li { margin-bottom: 6px; }
+
+/* ---------- FAQ ---------- */
+.lp-faq { margin-top: 22px; }
+.lp-faq details {
+  border-bottom: 1px solid var(--rule-2); padding: 15px 0;
+}
+.lp-faq details:first-of-type { border-top: 1px solid var(--rule); }
+.lp-faq summary {
+  cursor: pointer; font-weight: 700; font-size: 15px; list-style: none;
+  display: flex; gap: 11px; align-items: baseline;
+}
+.lp-faq summary::-webkit-details-marker { display: none; }
+.lp-faq summary::before { content: "問"; font-family: var(--mincho); color: var(--shu); font-size: 13px; flex: none; }
+.lp-faq details p { margin: 9px 0 0 24px; font-size: 14.5px; color: var(--muted); }
+
+/* ---------- 免責・フッタ ---------- */
+.lp-disclaimer {
+  margin-top: 30px; padding: 18px 20px; border: 1px solid var(--rule);
+  border-radius: 2px; font-size: 12.5px; color: var(--muted); background: var(--panel);
+}
+.lp-foot { border-top: 1px solid var(--rule); }
+.lp-foot > .lp-wrap { padding: 26px 24px 46px; font-size: 12.5px; color: var(--muted); }
+a { color: var(--ai); }
+
+.lp-guarantee{max-width:640px;margin:0 auto 28px;padding:22px 26px;border:1px solid var(--lp-line,#d8d3c8);border-radius:10px;background:rgba(0,0,0,.02);text-align:left}
+.lp-guarantee h3{margin:0 0 8px;font-size:1.02rem;letter-spacing:.02em}
+.lp-guarantee p{margin:0 0 6px;font-size:.92rem;line-height:1.8}
+.lp-guarantee-note{opacity:.72;font-size:.84rem !important}
+</style>
+</head>
+<body>
+<header class="lp-wrap lp-head">
+  <a class="lp-logo" href="https://9q6xtwz22p-cmd.github.io/dencho-filer/">電帳ファイラー</a>
+  <span class="lp-sub">電子帳簿保存法「検索要件」対応ツール</span>
+</header>
+<article class="lp-band">
+  <div class="lp-wrap art">
+    <h1 class="art-title">電子帳簿保存法の対応を社内で通す｜稟議書の書き方とそのまま使えるテンプレート</h1>
+    <p>対応が必要なことは分かった。方法も調べた。<strong>問題は、社内を通せないこと。</strong></p>
+<p>「今のままでも回ってるよね」「罰則あるの？」「その予算、来期でよくない？」——こう言われて止まっている担当者は多いです。</p>
+<p>この記事は、電子帳簿保存法への対応を<strong>社内で承認まで持っていくため</strong>の実務記事です。稟議書の全文テンプレートを置いてあるので、数字を差し替えればそのまま使えます。</p>
+<hr>
+<h2 id="なぜ電帳法の稟議は通りにくいのか">なぜ電帳法の稟議は通りにくいのか</h2>
+<p>理由は3つあります。先に構造を理解しておくと、書き方が決まります。</p>
+<p><strong>1. 罰則が「見えない」</strong></p>
+<p>電子帳簿保存法に「違反したら罰金◯円」という条文はありません。実際に起きるのは、青色申告の承認取消し、重加算税10%の加重、経費否認といった<strong>間接的な不利益</strong>です。これは怖いのですが、稟議書に「罰金◯円」と書けないため、上長にインパクトが伝わりません。</p>
+<p><strong>2. 効果が売上に直結しない</strong></p>
+<p>守りの投資です。「導入すると売上が◯円増えます」と書けません。</p>
+<p><strong>3. 期限が過ぎている</strong></p>
+<p>義務化は2024年1月です。「もう2年経ってるけど、今まで何もなかったよね？」と言われます。<strong>実際、何も起きていない会社がほとんどです。</strong>問題が表面化するのは税務調査のときだけで、それは数年に一度しか来ません。</p>
+<hr>
+<h2 id="通る稟議書の型は3つ">通る稟議書の型は3つ</h2>
+<p>上の3つの壁を踏まえると、書き方は次のどれかになります。<strong>自社の状況に一番近いものを選んでください。</strong></p>
+<h3 id="型A工数削減型最も通りやすい">型A：工数削減型（最も通りやすい）</h3>
+<p><strong>使える条件：</strong> 月の電子証憑が100件を超えている</p>
+<p>法令の話を前面に出さず、<strong>人件費の話にします。</strong> 上長が判断しやすいのはこちらです。</p>
+<blockquote>現在、電子で受領した請求書・領収書のファイル名変更に月◯時間を要している。 これを◯円のツール導入により月◯時間に短縮し、年間◯円の工数削減を見込む。</blockquote>
+<p>数字の作り方は後述します。</p>
+<h3 id="型Bリスク回避型">型B：リスク回避型</h3>
+<p><strong>使える条件：</strong> 税務調査が近い、または過去に指摘を受けたことがある</p>
+<blockquote>次回税務調査時、電子取引データの保存要件を満たさない場合、 青色申告承認の取消しおよび重加算税の加重（10%）の対象となる可能性がある。 対応コストは◯円であり、想定されるリスクに対して妥当と判断する。</blockquote>
+<p><strong>「取消しの可能性」を書くとき、断定は避けてください。</strong> 実務上、軽微な不備で即取消しになることは稀です。盛った稟議は後で信用を失います。</p>
+<h3 id="型C内部統制型">型C：内部統制型</h3>
+<p><strong>使える条件：</strong> 上場準備中、または監査法人・親会社の指摘がある</p>
+<blockquote>内部統制上、証憑の保存要件充足は必須項目である。 現状は要件を満たしておらず、監査対応上の指摘事項となる。</blockquote>
+<p>この型は、通すというより<strong>通さざるを得ない</strong>状況を書きます。</p>
+<hr>
+<h2 id="金額の根拠をどう作るか">金額の根拠をどう作るか</h2>
+<p>型Aを選んだ場合、ここが稟議書の中心になります。<strong>適当な数字を書くと必ず突っ込まれます。</strong></p>
+<h3 id="ステップ1件数を数える">ステップ1：件数を数える</h3>
+<p>先月1か月分の、メール添付・Webダウンロードで受領した請求書・領収書の件数を数えます。推測せず、実際に数えてください。上長は必ず「その数字どこから？」と聞きます。</p>
+<h3 id="ステップ21件あたりの時間を測る">ステップ2：1件あたりの時間を測る</h3>
+<p>実際に5件やってストップウォッチで測ります。内訳は、</p>
+<ul><li>PDFを開く</li><li>取引年月日・取引金額・取引先を読み取る</li><li>ファイル名を打ち直す</li><li>（索引簿方式なら）Excelに1行転記する</li></ul>
+<p><strong>実測でだいたい30秒〜1分</strong>です。「30秒」と書くほうが誠実で、かつ突っ込まれません。</p>
+<h3 id="ステップ3計算する">ステップ3：計算する</h3>
+<div class="tbl"><table><thead><tr><th>月の件数</th><th>1件30秒として月の工数</th><th>年間</th><th>時給3,000円換算</th></tr></thead><tbody><tr><td>50件</td><td>25分</td><td>5時間</td><td>15,000円</td></tr><tr><td>100件</td><td>50分</td><td>10時間</td><td>30,000円</td></tr><tr><td>200件</td><td>1時間40分</td><td>20時間</td><td>60,000円</td></tr><tr><td>300件</td><td>2時間30分</td><td>30時間</td><td>90,000円</td></tr><tr><td>500件</td><td>4時間10分</td><td>50時間</td><td>150,000円</td></tr></tbody></table></div>
+<p><strong>注意点が1つあります。</strong></p>
+<p>月50件程度だと年15,000円の効果しか出ません。ここで月額サービスを提案すると「元が取れない」と即座に否決されます。<strong>月100件未満の会社は、無理に予算を取らず0円の運用で通すほうが正解です。</strong>（0円でできる範囲は <a href="../cost/">電子帳簿保存法の対応にいくらかかるか</a> にまとめてあります）</p>
+<hr>
+<h2 id="そのまま使える稟議書テンプレート">そのまま使える稟議書テンプレート</h2>
+<p>以下をコピーして、◯の部分を自社の数字に置き換えてください。<strong>A4一枚に収まる分量にしてあります。</strong>長い稟議書は読まれません。</p>
+<pre><code>─────────────────────────────────────
+稟   議   書
+─────────────────────────────────────
+
+起案日：20◯◯年◯月◯日
+起案部署：◯◯部
+起案者：◯◯ ◯◯
+
+件名：電子帳簿保存法（電子取引データ保存）対応に伴うツール導入について
+
+1. 目的
+   電子取引データ保存の要件充足および、これに伴う経理部門の
+   定型作業工数の削減。
+
+2. 背景
+   2024年1月より、電子で受領した請求書・領収書等については、
+   電子データのまま保存することが全事業者に義務付けられている。
+   併せて、当社は基準期間（2課税年度前）の売上高が5,000万円を
+   超えるため、検索要件（取引年月日・取引金額・取引先による
+   検索）への対応が必要である。
+
+   現在は担当者が手作業でファイル名を付与して対応しているが、
+   受領件数の増加に伴い工数が増大している。
+
+3. 現状の工数
+   月間受領件数        ： 約◯◯◯件（20◯◯年◯月実績）
+   1件あたり所要時間   ： 約30秒（実測）
+   月間工数            ： 約◯時間◯分
+   年間工数            ： 約◯◯時間
+   人件費換算          ： 約◯◯◯,◯◯◯円／年（時給◯,◯◯○円）
+
+4. 導入するもの
+   名称   ： ◯◯◯◯
+   費用   ： ◯◯,◯◯◯円（買い切り／税込）
+   形態   ： ◯◯◯◯
+
+5. 導入後の見込み
+   月間工数  ： 約◯時間◯分 → 約◯分
+   年間削減  ： 約◯◯時間（約◯◯◯,◯◯◯円相当）
+   投資回収  ： 約◯か月
+
+6. 対応しない場合のリスク
+   税務調査において電子取引データの保存要件を満たしていないと
+   判断された場合、青色申告の承認取消し、および隠蔽・仮装が
+   認められた場合の重加算税の加重（10%）の対象となり得る。
+
+7. 情報セキュリティ上の確認
+   本ツールは受領した証憑データを外部サーバーへ送信しない。
+   処理はすべて社内端末のブラウザ内で完結するため、
+   当社情報セキュリティ規程◯条に定めるクラウドサービス利用申請の
+   対象外である。
+
+8. 添付資料
+   ・別紙1　現状工数の算定根拠
+   ・別紙2　訂正削除の防止に関する事務処理規程（案）
+
+以上
+─────────────────────────────────────</code></pre>
+<hr>
+<h2 id="上長から必ず出る5つの質問とその答え">上長から必ず出る5つの質問と、その答え</h2>
+<p>稟議を回す前に、答えを用意しておいてください。<strong>その場で答えられないと差し戻されます。</strong></p>
+<p><strong>Q1.「罰則はあるの？」</strong></p>
+<blockquote>直接の罰金規定はありません。ただし青色申告の承認取消し、重加算税の10%加重、経費の否認といった不利益の対象になり得ます。金額としては、否認された経費に対する追徴が最も影響が大きいと考えます。</blockquote>
+<p><strong>Q2.「今まで何も言われてないよね？」</strong></p>
+<blockquote>電子取引データ保存の不備は、税務調査の場でしか表面化しません。当社の前回調査は◯年◯月で、次回が近づいています。指摘を受けてから遡って整備するのは、実務上ほぼ不可能です。</blockquote>
+<p><strong>Q3.「会計ソフトで対応できないの？」</strong></p>
+<blockquote>現在の会計ソフト（◯◯）の標準機能では、受領した証憑ファイルの検索要件への対応は含まれていません。オプション契約は年額◯◯円で、今回の提案より高額です。</blockquote>
+<p><strong>Q4.「クラウドのサービスのほうが良くない？」</strong></p>
+<blockquote>月額が継続的に発生する点と、証憑データが外部に送信される点が懸念です。当社の取引先との契約には、資料の第三者提供に制限があるものが含まれます。今回の提案はデータが外部に出ないため、この論点を回避できます。</blockquote>
+<p><strong>Q5.「来期でいいのでは？」</strong></p>
+<blockquote>義務化は2024年1月に開始済みで、すでに未対応の期間が発生しています。遡って整備することはできないため、着手が遅れるほど未対応期間が長くなります。</blockquote>
+<hr>
+<h2 id="添付する別紙2も0円で用意できます">添付する「別紙2」も0円で用意できます</h2>
+<p>稟議書の説得力を上げる最も簡単な方法は、<strong>すでに手を動かしている証拠を添付すること</strong>です。</p>
+<p>「訂正削除の防止に関する事務処理規程」は、国税庁がサンプルを公開しており、<strong>作成に費用は一切かかりません。</strong>これを案として添付すると、稟議書の性格が「予算をください」から「対応を進めています、最後の1ピースの承認をください」に変わります。</p>
+<p><strong>通りやすさが明確に変わるので、必ず添付してください。</strong></p>
+<p>→ 全文ひな形（法人用・個人事業主用）は <a href="../jimu-shori-kitei/">訂正削除の防止に関する事務処理規程｜ひな形と書き方</a> に置いてあります。コピーして使えます。</p>
+<hr>
+<h2 id="稟議の前にそもそも対応が必要か確認する">稟議の前に：そもそも対応が必要か確認する</h2>
+<p>順番として、ここを飛ばさないでください。</p>
+<p>基準期間（2課税年度前）の売上高が5,000万円以下なら、<strong>検索要件への対応そのものが不要</strong>です。この場合、稟議を書く必要はありません。保存と規程だけで完了します。</p>
+<p>→ 判定手順は <a href="../search-requirement-exemption/">電帳法の検索要件が不要になる条件</a></p>
+<p><strong>「基準期間」は今期ではなく2課税年度前です。</strong>ここを取り違えて不要な稟議を書いてしまうケースがあります。</p>
+<hr>
+<h2 id="まとめ">まとめ</h2>
+<ul><li>電帳法の稟議が通りにくいのは、<strong>罰則が見えず、売上に直結せず、期限が過ぎている</strong>から</li><li><strong>月100件を超えるなら「工数削減型」で書く。</strong>法令の話より人件費の話のほうが通る</li><li>件数は<strong>実測</strong>、1件あたりは<strong>実測30秒</strong>。推測値を書くと必ず突っ込まれる</li><li><strong>月100件未満なら稟議を書かず、0円の運用で通す</strong>ほうが正解</li><li>事務処理規程（案）を添付すると通りやすさが変わる。<strong>作成費用は0円</strong></li></ul>
+<hr>
+<h2 id="稟議に添付する現状工数の算定根拠を作る">稟議に添付する「現状工数の算定根拠」を作る</h2>
+<p>別紙1に使える数字は、実際にツールを動かすと出せます。</p>
+<p>請求書・領収書のPDFをまとめて読み込ませると、取引年月日・取引金額・取引先を自動で読み取り、<strong>索引簿CSV</strong>として書き出します。この結果を見れば、「月◯件を手作業で処理していた」という根拠資料がそのまま作れます。</p>
+<p><strong>索引簿の作成は無料で、件数制限もありません。</strong>透かしや広告行も入りません。</p>
+<p>読み込んだファイルは<strong>外部に送信されません</strong>。すべてブラウザの中だけで処理するので、稟議前の検証段階でも情報セキュリティ規程に触れません。<strong>通信を切った状態でも同じように動くので、その場で確かめられます。</strong>（稟議書7項の根拠としてそのまま使えます）</p>
+<p>→ <strong><a href="https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/">電帳法 索引簿・ファイル名 作成ツール（無料・登録不要）</a></strong></p>
+<p>承認が下りた後、ファイル名の一括変更とZIP書き出しまで行う製品版は<strong>買い切り9,800円（税込）</strong>です。月額は発生しません。稟議書4項の「買い切り」はこの前提で書いてあります。</p>
+<hr>
+<p><em>本記事は一般的な情報提供を目的としたものであり、税務に関する助言ではありません。自社の対応方法および税務上の取扱いについては、顧問税理士または所轄税務署にご確認ください。制度の詳細は国税庁「電子帳簿保存法一問一答【電子取引関係】」をご参照ください。</em></p>
+    <hr>
+    <p><a href="https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/">電子帳簿保存法の実務ガイド 一覧へ</a></p>
+  </div>
+</article>
+<footer class="lp-foot">
+  <div class="lp-wrap">
+    <a href="https://9q6xtwz22p-cmd.github.io/dencho-filer/">電帳ファイラー</a> — 電子帳簿保存法「検索要件」対応ツール
+  </div>
+</footer>
+</body>
+</html>
