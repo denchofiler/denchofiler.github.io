@@ -23,6 +23,11 @@ const TOOL_DESC = '請求書・領収書のPDFから取引年月日・取引金�
 
 const read = (p) => readFileSync(p, 'utf8');
 
+// Google Search Console の所有権確認タグ。
+//   GSC_TOKEN="xxxx" npm run deploy  のように渡すと head に差し込まれる。
+const GSC = process.env.GSC_TOKEN || '';
+const gscTag = GSC ? `<meta name="google-site-verification" content="${GSC}">` : '';
+
 /** LP断片（<title> + <style> + 本文）を、SEO用のheadを備えた完全なHTMLにする */
 function page({ fragment, url, title, description, image, jsonLd, extraHead = '' }) {
   const i = fragment.indexOf('</style>');
@@ -49,6 +54,7 @@ function page({ fragment, url, title, description, image, jsonLd, extraHead = ''
 <meta name="twitter:description" content="${description}">
 <meta name="twitter:image" content="${SITE_URL}/${image}">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🗂️</text></svg>">
+${gscTag}
 ${extraHead}
 <script type="application/ld+json">
 ${JSON.stringify(jsonLd, null, 2)}
