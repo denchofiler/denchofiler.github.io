@@ -23,10 +23,12 @@ const TOOL_DESC = '請求書・領収書のPDFから取引年月日・取引金�
 
 const read = (p) => readFileSync(p, 'utf8');
 
-// Google Search Console の所有権確認タグ。
-//   GSC_TOKEN="xxxx" npm run deploy  のように渡すと head に差し込まれる。
+// Google Search Console の所有権確認。2方式のどちらでも通せるようにしてある。
+//   HTMLタグ方式 : GSC_TOKEN="xxxx" npm run deploy
+//   HTMLファイル方式: GSC_FILE="google1234abcd.html" npm run deploy
 const GSC = process.env.GSC_TOKEN || '';
 const gscTag = GSC ? `<meta name="google-site-verification" content="${GSC}">` : '';
+const GSC_FILE = (process.env.GSC_FILE || '').trim();
 
 /** LP断片（<title> + <style> + 本文）を、SEO用のheadを備えた完全なHTMLにする */
 function page({ fragment, url, title, description, image, jsonLd, extraHead = '' }) {
@@ -143,6 +145,16 @@ writeFileSync(join(OUT, 'sitemap.xml'),
 
 // GitHub Pages が Jekyll で処理してアンダースコア始まりを無視しないようにする
 writeFileSync(join(OUT, '.nojekyll'), '', 'utf8');
+
+/* ---------- Search Console の確認ファイル ---------- */
+if (GSC_FILE) {
+  if (!/^google[0-9a-f]+\.html$/i.test(GSC_FILE)) {
+    throw new Error(`確認ファイル名の形式が違います: ${GSC_FILE}（例: google1234abcd.html）`);
+  }
+  // 中身は決まった1行。Googleはこの文字列の一致を見る。
+  writeFileSync(join(OUT, GSC_FILE), `google-site-verification: ${GSC_FILE}`, 'utf8');
+  console.log(`  ${GSC_FILE}  ← Search Console の確認ファイル`);
+}
 
 console.log(`サイトを生成しました: ${OUT}/  (公開URLの想定: ${SITE_URL})`);
 for (const f of ['index.html', 'tool/index.html', 'robots.txt', 'sitemap.xml']) {
