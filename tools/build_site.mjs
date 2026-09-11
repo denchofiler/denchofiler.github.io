@@ -5,8 +5,9 @@
  * ツテが無い状態で唯一積み上がる導線は検索流入なので、
  * インデックスされる場所に「無料ツール」と「販売ページ」を置く。
  */
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { renderMarkdown, extractTitle, extractDescription } from './markdown.mjs';
 
 // 設定は site.config.json に持たせる。環境変数があればそちらを優先する。
 // 環境変数だけに頼ると、次に deploy したときSearch Consoleの確認タグが消えて
@@ -79,6 +80,10 @@ ${body}
 
 mkdirSync(join(OUT, 'tool'), { recursive: true });
 
+// 記事ページでもLPと同じ意匠を使う
+const lpSrc = read('lp/index.html');
+const lpStyle = lpSrc.slice(lpSrc.indexOf('<style>'), lpSrc.indexOf('</style>') + 8);
+
 /* ---------- 販売ページ ---------- */
 const lpJsonLd = {
   '@context': 'https://schema.org',
@@ -137,6 +142,56 @@ for (const f of ['hero.jpg', 'screen-table.jpg', 'screen-evidence.jpg', 'ogp.jpg
   if (existsSync(src)) copyFileSync(src, join(OUT, f));
 }
 
+/* ---------- 記事（/guide/） ---------- */
+// 検索から入ってくる導線の本体。記事ごとに1ページを生成する。
+const guides = [];
+if (existsSync('articles')) {
+  for (const file of readdirSync('articles').filter((f) => f.endsWith('.md')).sort()) {
+    const md = readFileSync(join('articles', file), 'utf8');
+    const slug = file.replace(/^\d+_/, '').replace(/\.md$/, '');
+    const title = extractTitle(md);
+    const desc = extractDescription(md);
+    const { html: bodyHtml } = renderMarkdown(md.replace(/^#\s+.+$/m, ''));
+
+    const article = `
+<header class="lp-wrap lp-head">
+  <a class="lp-logo" href="${SITE_URL}/">電帳ファイラー</a>
+  <span class="lp-sub">電子帳簿保存法「検索要件」対応ツール</span>
+</header>
+<article class="lp-band">
+  <div class="lp-wrap art">
+    <h1 class="art-title">${title}</h1>
+    ${bodyHtml}
+  </div>
+</article>
+<footer class="lp-foot">
+  <div class="lp-wrap">
+    <a href="${SITE_URL}/">電帳ファイラー</a> — 電子帳簿保存法「検索要件」対応ツール
+  </div>
+</footer>`;
+
+    mkdirSync(join(OUT, 'guide', slug), { recursive: true });
+    writeFileSync(join(OUT, 'guide', slug, 'index.html'), page({
+      fragment: lpStyle + article,
+      url: `${SITE_URL}/guide/${slug}/`,
+      title: `${title}｜電帳ファイラー`,
+      description: desc,
+      image: 'ogp.jpg',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'Article',
+        headline: title,
+        description: desc,
+        inLanguage: 'ja',
+        mainEntityOfPage: `${SITE_URL}/guide/${slug}/`,
+        image: `${SITE_URL}/ogp.jpg`,
+      },
+    }), 'utf8');
+    guides.push({ slug, title, desc });
+    console.log(`  guide/${slug}/  ${title}`);
+  }
+}
+
 /* ---------- クローラ向け ---------- */
 writeFileSync(join(OUT, 'robots.txt'),
   `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`, 'utf8');
@@ -147,6 +202,7 @@ writeFileSync(join(OUT, 'sitemap.xml'),
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>${SITE_URL}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>
   <url><loc>${SITE_URL}/tool/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>
+${guides.map((g) => `  <url><loc>${SITE_URL}/guide/${g.slug}/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`).join('\n')}
 </urlset>
 `, 'utf8');
 
