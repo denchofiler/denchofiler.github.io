@@ -8,6 +8,6 @@
     "build": "node build.js",
     "release": "node build.js && python3 tools/make_release.py",
     "site": "node build.js && node tools/build_site.mjs",
-    "deploy": "npm run site && git add -A && git commit -q -m \"サイト更新\" --allow-empty && git push -q origin main && git push -q --force origin \"$(git subtree split --prefix site main)\":gh-pages && echo \"公開しました: https://9q6xtwz22p-cmd.github.io/dencho-filer/\""
+    "deploy": "bash tools/deploy.sh"
   }
 }
