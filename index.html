@@ -377,6 +377,11 @@ table.lp-cmp { border-collapse: collapse; width: 100%; min-width: 640px; backgro
 .lp-foot { border-top: 1px solid var(--rule); }
 .lp-foot > .lp-wrap { padding: 26px 24px 46px; font-size: 12.5px; color: var(--muted); }
 a { color: var(--ai); }
+
+.lp-guarantee{max-width:640px;margin:0 auto 28px;padding:22px 26px;border:1px solid var(--lp-line,#d8d3c8);border-radius:10px;background:rgba(0,0,0,.02);text-align:left}
+.lp-guarantee h3{margin:0 0 8px;font-size:1.02rem;letter-spacing:.02em}
+.lp-guarantee p{margin:0 0 6px;font-size:.92rem;line-height:1.8}
+.lp-guarantee-note{opacity:.72;font-size:.84rem !important}
 </style>
 </head>
 <body>
@@ -448,7 +453,7 @@ a { color: var(--ai); }
     </div>
 
     <div class="lp-cta-row">
-      <a class="lp-btn" href="https://claude.ai/code/artifact/e3537777-bee1-41ce-8333-4e001b4b0698">体験版を試す（無料・登録不要）</a>
+      <a class="lp-btn" href="/dencho-filer/tool/">無料版を試す（登録不要）</a>
       <span class="lp-cta-note">ブラウザで開くだけ。5件までその場で変換できます。</span>
     </div>
   </div>
@@ -607,10 +612,16 @@ a { color: var(--ai); }
       </div>
     </div>
 
+
+    <div class="lp-guarantee">
+      <h3>30日間の返金保証</h3>
+      <p>お手元の請求書で試して、期待した働きをしなければ、購入から30日以内にご連絡ください。理由を問わず全額ご返金いたします。使用済みであっても構いません。</p>
+      <p class="lp-guarantee-note">ご連絡は<a href="https://denchofiler.base.shop/" target="_blank" rel="noopener">販売ページのお問い合わせ</a>から承ります。無名の売り手から9,800円を払う不安を、こちらで引き受けます。</p>
+    </div>
     <div class="lp-cta-row">
-      <a class="lp-btn" href="https://claude.ai/code/artifact/e3537777-bee1-41ce-8333-4e001b4b0698">まず体験版を試す</a>
+      <a class="lp-btn" href="/dencho-filer/tool/">まず無料版を試す</a>
       <a class="lp-btn lp-ghost" href="https://denchofiler.base.shop/items/157103862">購入する（¥9,800 買い切り）</a>
-      <span class="lp-cta-note">体験版は5件まで。製品版と読み取り精度は同じです。</span>
+      <span class="lp-cta-note">無料版は索引簿CSVの作成まで件数無制限。読み取り精度は製品版と同じです。</span>
     </div>
   </div>
 </section>
@@ -621,6 +632,10 @@ a { color: var(--ai); }
     <h2 class="lp-h2">買う前に知っておきたいこと</h2>
 
     <div class="lp-faq">
+      <details>
+        <summary>買ってみて合わなかったら、返金してもらえますか。</summary>
+        <p><strong>30日以内であれば、理由を問わず全額ご返金します。</strong>ダウンロード済みでも構いません。無名の売り手から9,800円を払っていただくわけですから、そのリスクはこちらで負うのが筋だと考えています。販売ページのお問い合わせからご連絡ください。</p>
+      </details>
       <details>
         <summary>本当に、ファイルは外部に送信されないのですか。</summary>
         <p>されません。通信を切った状態でも同じように動作しますので、その場でご確認いただけます。ブラウザの開発者ツールでネットワーク通信を監視していただいても構いません。</p>
