@@ -14,7 +14,9 @@ import { Script } from 'node:vm';
 const read = (p) => readFileSync(p, 'utf8');
 
 // 販売ページのURL。BASEのショップを開設したらここを差し替える。
-const BUY_URL = process.env.BUY_URL || 'https://claude.ai/code/artifact/23c94998-6cf8-4269-9855-1b0803f7cc1d';
+const BUY_URL = process.env.BUY_URL
+  || (existsSync('site.config.json') ? JSON.parse(readFileSync('site.config.json', 'utf8')).buyUrl : '')
+  || 'https://claude.ai/code/artifact/23c94998-6cf8-4269-9855-1b0803f7cc1d';
 
 /**
  * 日本語(Adobe-Japan1)の cMap を1つのバイナリに連結して base64 で埋め込む。
