@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電帳ファイラー — 電子帳簿保存法の検索要件に対応するファイル整理ツール</title>
+<meta name="description" content="PDFをドロップするだけで、取引年月日・取引金額・取引先を読み取り、電子帳簿保存法の検索要件を満たすファイル名への一括変更と索引簿CSVの作成を行います。ファイルは外部に送信されず、すべてブラウザ内で完結。索引簿の作成までは無料。">
+<link rel="canonical" href="https://9q6xtwz22p-cmd.github.io/dencho-filer/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="電帳ファイラー">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="電帳ファイラー — 電子帳簿保存法の検索要件に対応するファイル整理ツール">
+<meta property="og:description" content="PDFをドロップするだけで、取引年月日・取引金額・取引先を読み取り、電子帳簿保存法の検索要件を満たすファイル名への一括変更と索引簿CSVの作成を行います。ファイルは外部に送信されず、すべてブラウザ内で完結。索引簿の作成までは無料。">
+<meta property="og:url" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/">
+<meta property="og:image" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/ogp.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="電帳ファイラー — 電子帳簿保存法の検索要件に対応するファイル整理ツール">
+<meta name="twitter:description" content="PDFをドロップするだけで、取引年月日・取引金額・取引先を読み取り、電子帳簿保存法の検索要件を満たすファイル名への一括変更と索引簿CSVの作成を行います。ファイルは外部に送信されず、すべてブラウザ内で完結。索引簿の作成までは無料。">
+<meta name="twitter:image" content="https://9q6xtwz22p-cmd.github.io/dencho-filer/ogp.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🗂️</text></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "電帳ファイラー",
+  "description": "PDFをドロップするだけで、取引年月日・取引金額・取引先を読み取り、電子帳簿保存法の検索要件を満たすファイル名への一括変更と索引簿CSVの作成を行います。ファイルは外部に送信されず、すべてブラウザ内で完結。索引簿の作成までは無料。",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Windows, macOS（ブラウザで動作）",
+  "url": "https://9q6xtwz22p-cmd.github.io/dencho-filer/",
+  "inLanguage": "ja",
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "1事業者ライセンス",
+      "price": "9800",
+      "priceCurrency": "JPY",
+      "category": "買い切り"
+    },
+    {
+      "@type": "Offer",
+      "name": "会計事務所ライセンス",
+      "price": "39800",
+      "priceCurrency": "JPY",
+      "category": "買い切り"
+    }
+  ]
+}
+</script>
+<style>
+/* ============================================================
+   台帳（ledger）を骨格にした構成。
+   見出しは明朝＝税務・法務文書の書体。朱は検印にだけ使う。
+   ============================================================ */
+:root {
+  --washi:   #FBFAF7;
+  --panel:   #FFFFFF;
+  --sumi:    #16222E;
+  --ai:      #1F4E79;
+  --ai-soft: #E6EDF4;
+  --shu:     #B03A2E;
+  --rule:    #D9D3C6;
+  --rule-2:  #EDE9E0;
+  --muted:   #65707D;
+
+  --mincho: "Hiragino Mincho ProN", "Yu Mincho", YuMincho, "MS PMincho", serif;
+  --gothic: "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Yu Gothic", YuGothic, Meiryo, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, "Osaka-Mono", monospace;
+
+  --wrap: 1000px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --washi:   #14181D;
+    --panel:   #1B2027;
+    --sumi:    #E9E6E0;
+    --ai:      #7FB0DC;
+    --ai-soft: #1E2A36;
+    --shu:     #E08476;
+    --rule:    #333B45;
+    --rule-2:  #262D35;
+    --muted:   #98A2AE;
+  }
+}
+:root[data-theme="dark"] {
+  --washi:   #14181D;
+  --panel:   #1B2027;
+  --sumi:    #E9E6E0;
+  --ai:      #7FB0DC;
+  --ai-soft: #1E2A36;
+  --shu:     #E08476;
+  --rule:    #333B45;
+  --rule-2:  #262D35;
+  --muted:   #98A2AE;
+}
+:root[data-theme="light"] {
+  --washi:   #FBFAF7;
+  --panel:   #FFFFFF;
+  --sumi:    #16222E;
+  --ai:      #1F4E79;
+  --ai-soft: #E6EDF4;
+  --shu:     #B03A2E;
+  --rule:    #D9D3C6;
+  --rule-2:  #EDE9E0;
+  --muted:   #65707D;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--washi);
+  color: var(--sumi);
+  font-family: var(--gothic);
+  font-size: 16px;
+  line-height: 1.85;
+  -webkit-font-smoothing: antialiased;
+}
+
+.lp-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 24px; }
+
+h1, h2, h3 { font-family: var(--mincho); font-weight: 600; text-wrap: balance; line-height: 1.4; margin: 0; }
+
+.lp-eyebrow {
+  font-size: 12px; letter-spacing: .18em; color: var(--muted);
+  font-family: var(--gothic); font-weight: 700;
+}
+
+/* ---------- 台帳の帯 ---------- */
+.lp-band { border-top: 1px solid var(--rule); }
+.lp-band > .lp-wrap { padding-top: 64px; padding-bottom: 64px; }
+
+/* ---------- ヘッダ ---------- */
+.lp-head {
+  display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  padding: 20px 0 18px;
+}
+.lp-logo { font-family: var(--mincho); font-size: 21px; font-weight: 600; letter-spacing: .04em; }
+.lp-head .lp-sub { font-size: 12px; color: var(--muted); }
+
+/* ---------- ヒーロー ---------- */
+.lp-hero > .lp-wrap { padding-top: 40px; padding-bottom: 56px; }
+.lp-hero h1 { font-size: clamp(27px, 4.4vw, 44px); letter-spacing: .01em; }
+.lp-hero .lp-lede {
+  margin-top: 20px; max-width: 40em; color: var(--muted); font-size: 16px;
+}
+.lp-hero .lp-lede strong { color: var(--sumi); font-weight: 700; }
+
+/* ---------- 図版（全幅の暗色版面） ---------- */
+.lp-plate {
+  margin: 0;
+  background: #111113;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+.lp-plate img {
+  display: block; width: 100%; max-width: 1400px; height: auto; margin: 0 auto;
+}
+.lp-plate figcaption {
+  max-width: var(--wrap); margin: 0 auto; padding: 16px 24px 24px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.lp-plate-cap { font-size: 15px; color: #E8E4DC; }
+.lp-plate-cap strong { color: #F0A28E; font-weight: 700; }
+.lp-plate-sub { font-size: 12.5px; color: #8C9199; }
+
+/* ---------- 製品画面 ---------- */
+.lp-shot { margin: 26px 0 0; }
+.lp-shot img {
+  display: block; width: 100%; height: auto;
+  border: 1px solid var(--rule); border-radius: 2px; background: var(--panel);
+}
+.lp-shot figcaption { font-size: 12.5px; color: var(--muted); margin-top: 8px; }
+.lp-shot-inline { margin-top: 16px; max-width: 560px; }
+
+/* ---------- 変換の実演（台帳の行） ---------- */
+.lp-ledger {
+  margin-top: 34px; background: var(--panel);
+  border: 1px solid var(--rule); border-radius: 2px;
+  overflow-x: auto;
+}
+.lp-ledger-head {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 9px 16px; border-bottom: 1px solid var(--rule);
+  background: var(--rule-2); font-size: 11.5px; letter-spacing: .1em; color: var(--muted); font-weight: 700;
+}
+.lp-row {
+  display: grid; grid-template-columns: 1fr 30px 1.25fr; align-items: center;
+  gap: 14px; padding: 11px 16px; border-bottom: 1px solid var(--rule-2);
+  min-width: 620px;
+}
+.lp-row:last-child { border-bottom: 0; }
+.lp-before, .lp-after {
+  font-family: var(--mono); font-size: 12.5px; font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.lp-before { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule); }
+.lp-after { color: var(--ai); font-weight: 600; }
+.lp-arrow { color: var(--rule); text-align: center; font-size: 15px; }
+
+/* ---------- 検印 ---------- */
+.lp-seal-area { display: flex; align-items: center; gap: 22px; flex-wrap: wrap; margin-top: 30px; }
+.lp-seal {
+  flex: none;
+  width: 96px; height: 96px; border: 2.5px solid var(--shu); border-radius: 50%;
+  color: var(--shu); display: grid; place-content: center; text-align: center;
+  font-family: var(--mincho); font-size: 15px; line-height: 1.3; letter-spacing: .05em;
+  transform: rotate(-9deg); opacity: .9;
+  animation: lp-stamp .5s cubic-bezier(.2,.9,.3,1.4) .25s both;
+}
+@keyframes lp-stamp {
+  from { transform: rotate(-9deg) scale(1.7); opacity: 0; }
+  to   { transform: rotate(-9deg) scale(1);   opacity: .9; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp-seal { animation: none; }
+}
+.lp-seal-note { font-size: 13.5px; color: var(--muted); max-width: 34em; }
+
+/* ---------- CTA ---------- */
+.lp-cta-row { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 32px; align-items: center; }
+.lp-btn {
+  display: inline-block; padding: 13px 27px; border-radius: 2px; text-decoration: none;
+  font-weight: 700; font-size: 15px; border: 1.5px solid var(--ai);
+  background: var(--ai); color: var(--washi); transition: .15s;
+}
+.lp-btn:hover { background: var(--sumi); border-color: var(--sumi); }
+.lp-btn.lp-ghost { background: transparent; color: var(--ai); }
+.lp-btn.lp-ghost:hover { background: var(--ai-soft); color: var(--ai); border-color: var(--ai); }
+.lp-btn:focus-visible, a:focus-visible { outline: 2px solid var(--shu); outline-offset: 3px; }
+.lp-cta-note { font-size: 12.5px; color: var(--muted); }
+
+/* ---------- 見出し ---------- */
+.lp-h2 { font-size: clamp(21px, 2.8vw, 28px); margin-bottom: 8px; }
+.lp-band p { max-width: 40em; }
+
+/* ---------- 数字の強調 ---------- */
+.lp-stat {
+  display: flex; align-items: baseline; gap: 13px; flex-wrap: wrap;
+  margin: 26px 0 6px; padding-left: 17px; border-left: 3px solid var(--shu);
+}
+.lp-stat .lp-num {
+  font-family: var(--mincho); font-size: clamp(34px, 6vw, 52px); color: var(--shu);
+  font-variant-numeric: tabular-nums; line-height: 1;
+}
+.lp-stat .lp-num-label { font-size: 15px; color: var(--sumi); font-weight: 700; }
+.lp-src { font-size: 12px; color: var(--muted); }
+
+/* ---------- 判定（該当するか） ---------- */
+.lp-check {
+  margin-top: 28px; background: var(--panel); border: 1px solid var(--rule);
+  border-radius: 2px; padding: 22px 24px;
+}
+.lp-check h3 { font-size: 17px; margin-bottom: 12px; }
+.lp-check dl { margin: 0; display: grid; gap: 12px; }
+.lp-check dt { font-weight: 700; font-size: 14px; }
+.lp-check dd { margin: 3px 0 0; font-size: 14px; color: var(--muted); }
+.lp-tag {
+  display: inline-block; font-size: 11.5px; font-weight: 700; padding: 1px 9px;
+  border-radius: 2px; margin-right: 8px; vertical-align: 1.5px;
+}
+.lp-tag.lp-must { background: var(--shu); color: #fff; }
+.lp-tag.lp-free { background: var(--ai-soft); color: var(--ai); }
+
+/* ---------- 手順 ---------- */
+.lp-steps { margin-top: 26px; display: grid; gap: 0; }
+.lp-step {
+  display: grid; grid-template-columns: 62px 1fr; gap: 20px;
+  padding: 22px 0; border-top: 1px solid var(--rule-2); align-items: start;
+}
+.lp-step:first-child { border-top: 1px solid var(--rule); }
+.lp-step-n {
+  font-family: var(--mincho); font-size: 15px; color: var(--muted);
+  border: 1px solid var(--rule); border-radius: 50%;
+  width: 38px; height: 38px; display: grid; place-content: center;
+}
+.lp-step h3 { font-size: 17px; margin-bottom: 4px; }
+.lp-step p { font-size: 14.5px; color: var(--muted); margin: 0; }
+
+/* ---------- 表 ---------- */
+.lp-table-scroll { overflow-x: auto; margin-top: 24px; border: 1px solid var(--rule); border-radius: 2px; }
+table.lp-cmp { border-collapse: collapse; width: 100%; min-width: 640px; background: var(--panel); }
+.lp-cmp th, .lp-cmp td {
+  padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--rule-2); font-size: 14px;
+}
+.lp-cmp thead th {
+  background: var(--rule-2); font-size: 12px; letter-spacing: .06em;
+  color: var(--muted); font-weight: 700; white-space: nowrap;
+}
+.lp-cmp tbody th { font-weight: 700; white-space: nowrap; }
+.lp-cmp tr:last-child td, .lp-cmp tr:last-child th { border-bottom: 0; }
+.lp-cmp .lp-ours { background: var(--ai-soft); font-weight: 700; color: var(--ai); }
+
+/* ---------- 価格 ---------- */
+.lp-prices { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 18px; margin-top: 26px; }
+.lp-price {
+  background: var(--panel); border: 1px solid var(--rule); border-radius: 2px; padding: 26px 24px;
+}
+.lp-price.lp-feature { border-color: var(--ai); border-width: 1.5px; }
+.lp-price h3 { font-size: 16px; }
+.lp-price .lp-amount {
+  font-family: var(--mincho); font-size: 40px; font-variant-numeric: tabular-nums;
+  margin: 10px 0 2px; letter-spacing: -.01em;
+}
+.lp-price .lp-amount small { font-size: 14px; font-family: var(--gothic); color: var(--muted); margin-left: 4px; }
+.lp-price .lp-once { font-size: 12.5px; color: var(--shu); font-weight: 700; }
+.lp-price ul { margin: 16px 0 0; padding-left: 1.15em; font-size: 14px; color: var(--muted); }
+.lp-price li { margin-bottom: 6px; }
+
+/* ---------- FAQ ---------- */
+.lp-faq { margin-top: 22px; }
+.lp-faq details {
+  border-bottom: 1px solid var(--rule-2); padding: 15px 0;
+}
+.lp-faq details:first-of-type { border-top: 1px solid var(--rule); }
+.lp-faq summary {
+  cursor: pointer; font-weight: 700; font-size: 15px; list-style: none;
+  display: flex; gap: 11px; align-items: baseline;
+}
+.lp-faq summary::-webkit-details-marker { display: none; }
+.lp-faq summary::before { content: "問"; font-family: var(--mincho); color: var(--shu); font-size: 13px; flex: none; }
+.lp-faq details p { margin: 9px 0 0 24px; font-size: 14.5px; color: var(--muted); }
+
+/* ---------- 免責・フッタ ---------- */
+.lp-disclaimer {
+  margin-top: 30px; padding: 18px 20px; border: 1px solid var(--rule);
+  border-radius: 2px; font-size: 12.5px; color: var(--muted); background: var(--panel);
+}
+.lp-foot { border-top: 1px solid var(--rule); }
+.lp-foot > .lp-wrap { padding: 26px 24px 46px; font-size: 12.5px; color: var(--muted); }
+a { color: var(--ai); }
+</style>
+</head>
+<body>
+<header class="lp-wrap lp-head">
+  <span class="lp-logo">電帳ファイラー</span>
+  <span class="lp-sub">電子帳簿保存法「検索要件」対応ツール</span>
+</header>
+
+<section class="lp-hero lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">買い切り ／ インストール不要 ／ データを外に出さない</p>
+    <h1>その請求書、<br>ファイル名は「請求書.pdf」のままではありませんか。</h1>
+    <p class="lp-lede">
+      2024年1月から、メールやWebで受け取った請求書・領収書は<strong>電子のまま保存することが義務</strong>になりました。
+      保存するだけでは足りず、<strong>取引年月日・取引金額・取引先で検索できる状態</strong>にしておく必要があります。
+      電帳ファイラーは、PDFをまとめて放り込むだけでその状態を作ります。
+    </p>
+  </div>
+</section>
+
+<!-- 図版は独立した暗色の版面として置く。周囲の和紙地と対比させ、挿絵ではなく「図」として扱う -->
+<figure class="lp-plate">
+  <img src="hero.jpg" alt="山積みになった請求書や領収書が、検索窓と一覧を備えた画面へ整理されていく様子。整理後の各カードには、日付・金額・取引先を表す3つのアイコンが並んでいる。" width="1774" height="887">
+  <figcaption>
+    <span class="lp-plate-cap">積み上がった証憑を、<strong>取引年月日・取引金額・取引先</strong>で引ける状態にする。</span>
+    <span class="lp-plate-sub">この3項目が、電子帳簿保存法の検索要件そのものです。</span>
+  </figcaption>
+</figure>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">実際の変換</p>
+
+    <div class="lp-ledger">
+      <div class="lp-ledger-head">
+        <span>取り込んだファイル</span>
+        <span>保存されるファイル名</span>
+      </div>
+      <div class="lp-row">
+        <span class="lp-before">請求書.pdf</span>
+        <span class="lp-arrow">→</span>
+        <span class="lp-after">20260115_1234567_テスト工業株式会社.pdf</span>
+      </div>
+      <div class="lp-row">
+        <span class="lp-before">scan_0412.pdf</span>
+        <span class="lp-arrow">→</span>
+        <span class="lp-after">20260203_330000_株式会社ブルーオーシャン.pdf</span>
+      </div>
+      <div class="lp-row">
+        <span class="lp-before">1月分ご請求(最終).pdf</span>
+        <span class="lp-arrow">→</span>
+        <span class="lp-after">20260302_262900_株式会社オフィスサプライ北関東.pdf</span>
+      </div>
+      <div class="lp-row">
+        <span class="lp-before">領収書(2).pdf</span>
+        <span class="lp-arrow">→</span>
+        <span class="lp-after">20260302_550000_株式会社オフィスサプライ北関東.pdf</span>
+      </div>
+    </div>
+
+    <div class="lp-seal-area">
+      <div class="lp-seal">検索要件<br>適合</div>
+      <p class="lp-seal-note">
+        リネームと同時に<strong>索引簿（CSV）</strong>を作ります。表計算ソフトで開けるので、
+        範囲指定検索にも、2項目以上の組合せ検索にも、そのまま対応できます。
+      </p>
+    </div>
+
+    <div class="lp-cta-row">
+      <a class="lp-btn" href="https://claude.ai/code/artifact/e3537777-bee1-41ce-8333-4e001b4b0698">体験版を試す（無料・登録不要）</a>
+      <span class="lp-cta-note">ブラウザで開くだけ。5件までその場で変換できます。</span>
+    </div>
+  </div>
+</section>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">現状</p>
+    <h2 class="lp-h2">義務化から2年半。まだ終わっていない会社があります。</h2>
+
+    <div class="lp-stat">
+      <span class="lp-num">32<small style="font-size:.5em">%</small></span>
+      <span class="lp-num-label">の中小企業が、電子帳簿保存法に十分対応できていない</span>
+    </div>
+    <p class="lp-src">日本商工会議所 調査（2026年4月時点）</p>
+
+    <p style="margin-top:22px">
+      対応が進まない理由は、制度が難しいからではありません。
+      <strong>1件ずつファイル名を打ち直す作業が、単純に終わらない</strong>からです。
+      月100件を手作業でリネームすると、1件30秒としても年間10時間が消えます。
+    </p>
+
+    <div class="lp-check">
+      <h3>まず、自社に検索要件が課されるか確認してください</h3>
+      <dl>
+        <dt><span class="lp-tag lp-must">必須</span>基準期間（2課税年度前）の売上高が 5,000万円超</dt>
+        <dd>検索要件への対応が必要です。ファイル名または索引簿で、取引年月日・取引金額・取引先を検索できる状態にします。</dd>
+
+        <dt><span class="lp-tag lp-free">免除</span>売上高 5,000万円以下で、ダウンロードの求めに応じられる</dt>
+        <dd>検索要件は不要です。ただし電子データを電子のまま保存する義務と、事務処理規程などによる真実性の確保は残ります。</dd>
+
+        <dt><span class="lp-tag lp-free">免除</span>出力書面を日付・取引先ごとに整理し、ダウンロードの求めに応じられる</dt>
+        <dd>この場合も検索要件は不要です。</dd>
+      </dl>
+      <p style="font-size:13px;margin-top:14px;color:var(--muted)">
+        出典：国税庁「電子帳簿保存法一問一答【電子取引関係】」。判断に迷う場合は顧問税理士にご確認ください。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">使い方</p>
+    <h2 class="lp-h2">ドロップして、色の付いた欄だけ直して、書き出す。</h2>
+
+    <figure class="lp-shot">
+      <img src="screen-table.jpg" alt="電帳ファイラーの操作画面。請求書.pdf や scan_0412.pdf といった元のファイル名が、取引年月日・取引金額・取引先を含む名前に変換された一覧が表示されている。" width="2360" height="1954" loading="lazy">
+      <figcaption>実際の操作画面です。5件を読み込んだところ。自信のない欄は黄色で示されます。</figcaption>
+    </figure>
+
+    <div class="lp-steps">
+      <div class="lp-step">
+        <div class="lp-step-n">一</div>
+        <div>
+          <h3>PDFをまとめてドロップする</h3>
+          <p>取引年月日・取引金額・取引先・書類種別・登録番号（インボイス番号）を自動で読み取ります。和暦、全角数字にも対応します。「支払期限」を取引日と取り違えたり、「小計」を合計と間違えたりしないよう作り込んでいます。</p>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-n">二</div>
+        <div>
+          <h3>自信のない欄が色で示される</h3>
+          <p>読み取れた項目でも確信度が低ければ黄色、読み取れなければ赤で表示します。「確認」を押すと元のPDFと、読み取り候補が<b>根拠付きで</b>並びます。候補をクリックするだけで直せます。</p>
+          <figure class="lp-shot lp-shot-inline">
+            <img src="screen-evidence.jpg" alt="読み取り候補の一覧。取引年月日の候補として「20260115（請求日）」と「20260228（支払期限）」、取引金額の候補として「1,234,567（ご請求金額）」「1,122,334（小計）」「112,233（消費税）」が、それぞれ根拠のラベル付きで並んでいる。" width="2240" height="1368" loading="lazy">
+            <figcaption>なぜその値を選んだのかが見えます。請求日と支払期限、合計と小計を、根拠ごと見比べて選べます。</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="lp-step">
+        <div class="lp-step-n">三</div>
+        <div>
+          <h3>ZIPで書き出す</h3>
+          <p>リネーム済みファイル（年月フォルダ付き）、索引簿CSV、訂正削除の防止に関する事務処理規程のひな形が、ひとまとめで手に入ります。展開して保存先に置くだけです。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">設計思想</p>
+    <h2 class="lp-h2">会計証憑を、他社のサーバーに預けない。</h2>
+    <p style="margin-top:16px">
+      請求書には取引先名、金額、振込口座、担当者名が載っています。
+      本来、外に出したくない情報のはずです。
+    </p>
+    <p>
+      電帳ファイラーは、読み込んだファイルを<strong>一切送信しません</strong>。
+      すべての処理があなたのブラウザの中だけで完結します。
+      アップロードも、アカウント登録も、クラウド保存もありません。
+    </p>
+    <p>
+      確かめ方は簡単です。<strong>通信を切った状態で開いてください。</strong>まったく同じように動作します。
+      HTMLファイル1個なので、社内ITの許可も管理者権限も要りません。
+    </p>
+  </div>
+</section>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">比較</p>
+    <h2 class="lp-h2">月額を払い続けるほどではない、という会社へ。</h2>
+
+    <div class="lp-table-scroll">
+      <table class="lp-cmp">
+        <thead>
+          <tr>
+            <th></th>
+            <th>クラウド会計・経費SaaS</th>
+            <th>NAS同梱ソフト</th>
+            <th class="lp-ours">電帳ファイラー</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><th>費用</th><td>月額が継続</td><td>ハードウェア購入が前提</td><td class="lp-ours">買い切り</td></tr>
+          <tr><th>導入</th><td>会計ソフトの移行を伴うことが多い</td><td>機器の設置と設定</td><td class="lp-ours">HTMLを開くだけ</td></tr>
+          <tr><th>証憑データ</th><td>事業者のサーバーへ送信</td><td>社内に保存</td><td class="lp-ours">ブラウザ内のみ・送信なし</td></tr>
+          <tr><th>対応OS</th><td>ブラウザ</td><td>Windows中心</td><td class="lp-ours">Windows / macOS</td></tr>
+          <tr><th>索引簿</th><td>製品により対応</td><td>製品により対応</td><td class="lp-ours">CSVで自動生成</td></tr>
+          <tr><th>事務処理規程</th><td>別途用意</td><td>別途用意</td><td class="lp-ours">ひな形を同梱</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="lp-band">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">価格</p>
+    <h2 class="lp-h2">買ったら、それで終わりです。</h2>
+
+    <div class="lp-prices">
+      <div class="lp-price lp-feature">
+        <h3>1事業者ライセンス</h3>
+        <div class="lp-amount">¥9,800<small>税込</small></div>
+        <div class="lp-once">買い切り・永続利用</div>
+        <ul>
+          <li>1法人（または1個人事業主）で利用</li>
+          <li>人数・端末数の制限なし</li>
+          <li>処理件数の制限なし</li>
+          <li>事務処理規程のひな形つき</li>
+        </ul>
+      </div>
+      <div class="lp-price">
+        <h3>会計事務所ライセンス</h3>
+        <div class="lp-amount">¥39,800<small>税込</small></div>
+        <div class="lp-once">買い切り・永続利用</div>
+        <ul>
+          <li>顧問先の業務での利用を含む</li>
+          <li>顧問先数の制限なし</li>
+          <li>顧問先への導入支援に使えます</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="lp-cta-row">
+      <a class="lp-btn" href="https://claude.ai/code/artifact/e3537777-bee1-41ce-8333-4e001b4b0698">まず体験版を試す</a>
+      <a class="lp-btn lp-ghost" href="#lp-buy">購入する</a>
+      <span class="lp-cta-note">体験版は5件まで。製品版と読み取り精度は同じです。</span>
+    </div>
+  </div>
+</section>
+
+<section class="lp-band" id="lp-buy">
+  <div class="lp-wrap">
+    <p class="lp-eyebrow">よくあるご質問</p>
+    <h2 class="lp-h2">買う前に知っておきたいこと</h2>
+
+    <div class="lp-faq">
+      <details>
+        <summary>本当に、ファイルは外部に送信されないのですか。</summary>
+        <p>されません。通信を切った状態でも同じように動作しますので、その場でご確認いただけます。ブラウザの開発者ツールでネットワーク通信を監視していただいても構いません。</p>
+      </details>
+      <details>
+        <summary>読み取りは100%正確ですか。</summary>
+        <p>いいえ。請求書の書式は発行元ごとに異なるため、自動判定が外れることはあります。だからこのツールは「全部お任せ」ではなく、<strong>自信のない箇所を色で示し、根拠付きの候補から選べる</strong>設計にしています。最終確認は人が行う前提です。</p>
+      </details>
+      <details>
+        <summary>紙をスキャンしたPDFは読めますか。</summary>
+        <p>画像だけのPDFには文字情報が無いため、自動読み取りはできません。その場合は「文字情報なし」と表示されますので、手入力で補ってください。ファイル名の付与と索引簿の作成は同じように行えます。</p>
+      </details>
+      <details>
+        <summary>これを使えば電帳法に対応したことになりますか。</summary>
+        <p>本ツールが担うのは、検索要件を満たすファイル名の付与と索引簿の作成です。あわせて真実性の確保（事務処理規程の備付けなど）が必要で、そのひな形も同梱しています。ただし最終的な運用の可否は、顧問税理士または所轄税務署にご確認ください。</p>
+      </details>
+      <details>
+        <summary>会計ソフトを乗り換える必要はありますか。</summary>
+        <p>ありません。本ツールはファイルの整理だけを行います。今お使いの会計ソフトや保存先（社内サーバー、NAS、クラウドストレージ）はそのままで構いません。</p>
+      </details>
+      <details>
+        <summary>ファイル名のルールを自社の形式に変えられますか。</summary>
+        <p>変えられます。｛日付｝｛金額｝｛取引先｝｛書類種別｝｛登録番号｝｛連番｝｛元ファイル名｝を自由に組み合わせられます。年月フォルダ・取引先フォルダへの振り分けも選べます。</p>
+      </details>
+    </div>
+
+    <div class="lp-disclaimer">
+      本ページおよび本ソフトウェアは、一般的な情報提供を目的としたものであり、税務に関する助言ではありません。
+      電子帳簿保存法への対応の可否および運用方法については、顧問税理士または所轄税務署にご確認ください。
+      制度の詳細は国税庁「電子帳簿保存法一問一答【電子取引関係】」をご参照ください。
+      本ソフトウェアはPDFの読み取りに pdf.js（Apache License 2.0）を利用しています。
+    </div>
+  </div>
+</section>
+
+<footer class="lp-foot">
+  <div class="lp-wrap">
+    電帳ファイラー — 電子帳簿保存法「検索要件」対応ツール
+  </div>
+</footer>
+</body>
+</html>

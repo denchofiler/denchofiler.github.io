@@ -1,0 +1,12 @@
+{
+  "name": "dencho-filer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.test.js",
+    "build": "node build.js",
+    "release": "node build.js && python3 tools/make_release.py",
+    "site": "node build.js && node tools/build_site.mjs"
+  }
+}

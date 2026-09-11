@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>電帳ファイラー — 電子帳簿保存法 検索要件対応ツール</title>
+<style>/*__CSS__*/</style>
+</head>
+<body>
+
+<header>
+  <h1>電帳ファイラー</h1>
+  <span class="badge" id="edition">__EDITION_LABEL__</span>
+  <span class="spacer"></span>
+  <button class="linkbtn" id="btnHelp">使い方</button>
+  <button class="linkbtn" id="btnLaw">電帳法の要件</button>
+  <button class="linkbtn" id="btnKitei">事務処理規程</button>
+</header>
+
+<div class="privacy-note">
+  🔒 <b>ファイルは外部に送信されません。</b>すべての処理はこのブラウザの中だけで完結します（通信は一切発生しません）。
+</div>
+
+<main>
+  <div class="trialbar" id="trialbar" style="display:none">
+    <b>無料版</b>です。読み取りと<b>索引簿CSVの作成は件数無制限</b>でお使いいただけます（透かしや注記も入りません）。
+    <b>ファイル名を一括で変更してZIPで書き出す機能</b>は製品版の機能です。
+  </div>
+
+  <section class="settings">
+    <div class="field">
+      <label for="ownName">自社名（取引先の候補から除外します）</label>
+      <input id="ownName" type="text" placeholder="例：株式会社サンプル商事" autocomplete="off">
+      <div class="hint">請求書の「御中」宛名＝自社を、取引先と取り違えないために使います。</div>
+    </div>
+    <div class="field">
+      <label for="tpl">ファイル名の形式</label>
+      <input id="tpl" type="text" value="{日付}_{金額}_{取引先}" autocomplete="off">
+      <div class="hint">
+        <code>{日付}</code> <code>{金額}</code> <code>{取引先}</code>
+        <code>{書類種別}</code> <code>{登録番号}</code> <code>{連番}</code> <code>{元ファイル名}</code>
+      </div>
+    </div>
+    <div class="field">
+      <label for="folder">フォルダ分け</label>
+      <select id="folder">
+        <option value="none">分けない（すべて同じ階層）</option>
+        <option value="ym" selected>年月ごと（2026/01/）</option>
+        <option value="y">年ごと（2026/）</option>
+        <option value="vendor">取引先ごと</option>
+      </select>
+      <div class="hint">可視性の確保のため、年月別の整理が実務で推奨されています。</div>
+    </div>
+  </section>
+
+  <div class="drop" id="drop">
+    <div class="big">ここに PDF をドラッグ＆ドロップ</div>
+    <div class="sub">またはクリックしてファイルを選択（PDF / JPG / PNG に対応・複数可）</div>
+    <input type="file" id="picker" multiple accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/*" hidden>
+  </div>
+
+  <div class="progress" id="progress">
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="txt" id="progressTxt">読み取り中…</div>
+  </div>
+
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:170px">元のファイル名</th>
+          <th style="width:112px">取引年月日</th>
+          <th style="width:104px">取引金額</th>
+          <th style="width:180px">取引先</th>
+          <th style="width:88px">書類種別</th>
+          <th>保存ファイル名</th>
+          <th style="width:104px"></th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+        <tr class="emptyrow"><td colspan="7" class="empty">まだファイルがありません。上の枠に PDF をドロップしてください。</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="actions">
+    <div class="summary" id="summary">0 件</div>
+    <span class="spacer"></span>
+    <button class="btn ghost" id="btnClear">すべて削除</button>
+    <button class="btn ghost" id="btnCsv">索引簿CSVのみ</button>
+    <button class="btn" id="btnZip" disabled>ZIPで書き出す</button>
+  </div>
+</main>
+
+<!-- プレビュー -->
+<aside class="drawer" id="drawer">
+  <div class="dhead">
+    <strong id="drawerName">—</strong>
+    <span class="spacer" style="flex:1"></span>
+    <button class="rowbtn" id="drawerClose">閉じる</button>
+  </div>
+  <div class="dbody" id="drawerBody"></div>
+</aside>
+
+<!-- 使い方 -->
+<div class="modal" id="mHelp">
+  <div class="box">
+    <button class="close" data-close>&times;</button>
+    <h2>使い方</h2>
+    <h3>1. 自社名を入れる</h3>
+    <p>請求書には「宛名（自社）」と「発行元（取引先）」の両方の社名が載っています。自社名を入れておくと、取引先の判定精度が上がります。</p>
+    <h3>2. PDF をまとめてドロップ</h3>
+    <p>取引年月日・取引金額・取引先・書類種別・登録番号を自動で読み取ります。読み取りに自信がない項目は
+      <span style="background:#fff8e1;border:1px solid #f0c36d;padding:1px 5px;border-radius:3px">黄色</span>、
+      読み取れなかった項目は <span style="background:#fdecec;border:1px solid #e58b8b;padding:1px 5px;border-radius:3px">赤</span> で表示されます。</p>
+    <h3>3. 色が付いた欄だけ直す</h3>
+    <p>各欄はその場で編集できます。「確認」を押すと元のPDFと読み取り候補が表示され、候補をクリックするだけで修正できます。</p>
+    <h3>4. ZIP で書き出す</h3>
+    <p>リネーム済みのファイルと <b>索引簿.csv</b>、<b>事務処理規程のひな形.txt</b> がまとめてダウンロードされます。
+      展開してそのまま保存先フォルダに置いてください。</p>
+    <div class="notice">
+      スキャンした画像だけのPDF（文字情報を持たないPDF）は自動読み取りができません。その場合は手入力で補ってください。
+    </div>
+  </div>
+</div>
+
+<!-- 電帳法の要件 -->
+<div class="modal" id="mLaw">
+  <div class="box">
+    <button class="close" data-close>&times;</button>
+    <h2>電子帳簿保存法（電子取引データ保存）の要点</h2>
+    <p>2024年1月1日以降、メールやWebでやり取りした請求書・領収書などの<b>電子取引データは、電子のまま保存することが義務</b>になっています。</p>
+
+    <h3>可視性の確保 ― 検索要件</h3>
+    <p>次の3つを満たす必要があります。</p>
+    <ol>
+      <li><b>取引年月日・取引金額・取引先</b>で検索できること</li>
+      <li>日付または金額の<b>範囲指定</b>で検索できること</li>
+      <li>2以上の任意の項目を<b>組み合わせて</b>検索できること</li>
+    </ol>
+    <p>税務調査の際に<b>ダウンロードの求めに応じられる</b>ようにしている場合、②と③は不要です。</p>
+
+    <h3>検索要件そのものが不要になる場合</h3>
+    <ul>
+      <li>基準期間（2課税年度前）の<b>売上高が5,000万円以下</b>で、ダウンロードの求めに応じられるようにしている</li>
+      <li>電子取引データを出力した書面を、<b>日付および取引先ごとに整理</b>して提示・提出できるようにしており、かつダウンロードの求めに応じられるようにしている</li>
+    </ul>
+
+    <h3>真実性の確保</h3>
+    <p>タイムスタンプ等を使わない場合は、<b>訂正削除の防止に関する事務処理規程</b>を定めて運用する方法が認められています。
+      本ツールの「事務処理規程」ボタンからひな形を出力できます。</p>
+
+    <h3>このツールが担当する範囲</h3>
+    <p>本ツールは <b>①検索要件を満たすファイル名の付与</b> と <b>索引簿（CSV）の作成</b> を自動化します。
+      索引簿は表計算ソフトで開けるので、範囲指定検索・組合せ検索にもそのまま対応できます。</p>
+
+    <div class="notice">
+      本ツールおよび本説明は、一般的な情報提供であり税務アドバイスではありません。
+      最終的な運用可否は顧問税理士または所轄税務署にご確認ください。
+      制度の詳細は国税庁「電子帳簿保存法一問一答【電子取引関係】」をご参照ください。
+    </div>
+  </div>
+</div>
+
+<!-- 事務処理規程 -->
+<div class="modal" id="mKitei">
+  <div class="box">
+    <button class="close" data-close>&times;</button>
+    <h2>訂正削除の防止に関する事務処理規程</h2>
+    <p>真実性の確保の要件を、システム対応なしで満たすための規程のひな形です。法人用・個人事業主用を用意しています。
+      内容を自社の実態に合わせて調整のうえ、備え付けてください。</p>
+    <p style="margin-top:14px">
+      <button class="btn" data-kitei="corp">法人用をダウンロード</button>
+      <button class="btn ghost" data-kitei="solo">個人事業主用をダウンロード</button>
+    </p>
+    <div class="notice">
+      ひな形は国税庁が公開しているサンプルの構成にならった一般的な内容です。採用にあたっては顧問税理士にご確認ください。
+    </div>
+  </div>
+</div>
+
+
+<!-- 製品版のご案内 -->
+<div class="modal" id="mUpgrade">
+  <div class="box">
+    <button class="close" data-close>&times;</button>
+    <h2>ZIP一括書き出しは製品版の機能です</h2>
+    <p>いま画面に出ている読み取り結果は、<b>「索引簿CSVのみ」ボタン</b>からそのまま書き出せます。
+      国税庁は<b>索引簿による方法</b>も認めているため、索引簿を作って保存しておけば検索要件は満たせます。
+      ここまでは無料版で件数無制限にお使いいただけます。</p>
+
+    <h3>製品版でできること</h3>
+    <ul>
+      <li><b>ファイル名の一括変更とZIP書き出し</b>（年月フォルダ・取引先フォルダへの振り分け付き）</li>
+      <li><b>オフラインで動くHTMLファイル</b>をお渡しします。社内ネットワーク内に置いて配布できます</li>
+      <li>訂正削除の防止に関する<b>事務処理規程のひな形</b>（法人用・個人事業主用）</li>
+      <li>商用利用ライセンス（1事業者内は人数・端末数の制限なし）</li>
+    </ul>
+
+    <p style="margin-top:16px">
+      <a class="btn" id="buyLink" href="__BUY_URL__" target="_blank" rel="noopener">製品版を見る</a>
+    </p>
+    <div class="notice">
+      索引簿だけで運用する場合、この無料版をこのままお使いいただいて構いません。
+      ファイルそのものを整理したい場合に製品版をご検討ください。
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>/*__CMAPS__*/</script>
+<script type="module">/*__PDFJS_WORKER__*/</script>
+<script type="module">/*__PDFJS__*/</script>
+<script type="module">/*__APP_JS__*/</script>
+</body>
+</html>

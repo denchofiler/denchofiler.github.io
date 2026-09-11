@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://9q6xtwz22p-cmd.github.io/dencho-filer/sitemap.xml
