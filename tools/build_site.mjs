@@ -16,7 +16,7 @@ const cfg = existsSync('site.config.json')
   ? JSON.parse(readFileSync('site.config.json', 'utf8'))
   : {};
 
-const SITE_URL = (process.env.SITE_URL || cfg.siteUrl || 'https://9q6xtwz22p-cmd.github.io/dencho-filer').replace(/\/$/, '');
+const SITE_URL = (process.env.SITE_URL || cfg.siteUrl || 'https://denchofiler.github.io').replace(/\/$/, '');
 const OUT = 'site';
 
 const TITLE = '電帳ファイラー — 電子帳簿保存法の検索要件に対応するファイル整理ツール';

@@ -1,6 +1,6 @@
 # X 投稿セット（電帳ファイラー）
 
-無料ツールのURL: https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
+無料ツールのURL: https://denchofiler.github.io/tool/
 販売ページ: https://denchofiler.base.shop/items/157103862
 
 ---
@@ -30,7 +30,7 @@
 ・登録不要
 ・ファイルは外部に送信されません（通信を切っても動きます）
 
-https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
+https://denchofiler.github.io/tool/
 ```
 
 **「外部に送信されない」が一番効く行です。** クラウド会計が絶対に言えない一行なので、必ず残す。

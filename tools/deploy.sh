@@ -12,8 +12,8 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
-REPO="9q6xtwz22p-cmd/dencho-filer"
-URL="https://9q6xtwz22p-cmd.github.io/dencho-filer/"
+REPO="denchofiler/denchofiler.github.io"
+URL="https://denchofiler.github.io/"
 
 echo "▶ サイトを生成しています…"
 npm run --silent site

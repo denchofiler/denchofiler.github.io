@@ -154,7 +154,7 @@ ABC商事
 
 読み込んだファイルは**外部に送信されません**。すべてブラウザの中だけで処理します。
 
-→ **[電帳法 索引簿・ファイル名 作成ツール（無料）](https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/)**
+→ **[電帳法 索引簿・ファイル名 作成ツール（無料）](https://denchofiler.github.io/tool/)**
 
 ---
 

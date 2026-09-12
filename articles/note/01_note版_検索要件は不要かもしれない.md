@@ -88,10 +88,10 @@ noteの読者は個人事業主・フリーランスが多く、その多くが�
 判定の手順、事務処理規程のひな形（法人用・個人事業主用の全文）、対応が必要だった場合の具体的な進め方は、こちらにまとめています。
 
 ▶ 電帳法の検索要件が不要になる条件
-https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/search-requirement-exemption/
+https://denchofiler.github.io/guide/search-requirement-exemption/
 
 ▶ 訂正削除の防止に関する事務処理規程｜ひな形と書き方
-https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/jimu-shori-kitei/
+https://denchofiler.github.io/guide/jimu-shori-kitei/
 
 ひな形はそのままコピーして使えます。無料です。
 
@@ -106,7 +106,7 @@ https://9q6xtwz22p-cmd.github.io/dencho-filer/guide/jimu-shori-kitei/
 読み込んだファイルは外部に送信されません。すべてブラウザの中だけで処理するので、請求書がどこかのサーバーに送られることはありません。通信を切った状態でも同じように動きます。
 
 ▶ 電帳法 索引簿・ファイル名 作成ツール（無料・登録不要）
-https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
+https://denchofiler.github.io/tool/
 
 不要だった方は、ここで閉じて構いません。**やらなくていい作業をやらないことが、いちばんの効率化です。**
 

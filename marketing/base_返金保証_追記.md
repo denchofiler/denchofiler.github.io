@@ -23,7 +23,7 @@
 
 購入前に、無料版で読み取り精度をご確認いただけます。
 索引簿CSVの作成までは無料・件数無制限・登録不要です。
-https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
+https://denchofiler.github.io/tool/
 ```
 
 ---
@@ -39,7 +39,7 @@ https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
 理由を問わず、全額をご返金いたします。ダウンロード済みでも構いません。
 
 なお、ご購入前に無料版で動作と読み取り結果をご確認いただけます。
-無料版：https://9q6xtwz22p-cmd.github.io/dencho-filer/tool/
+無料版：https://denchofiler.github.io/tool/
 ```
 
 ---
